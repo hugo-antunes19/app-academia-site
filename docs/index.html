@@ -1,20 +1,1134 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>App Academia</title>
+  <title>Pulsus — Treine. Registre. Evolua.</title>
+  <meta name="description" content="Personal trainer digital no bolso. Crie treinos, registre séries em tempo real e acompanhe sua evolução com o Pulsus."/>
+  <meta property="og:title" content="Pulsus — Treine. Registre. Evolua."/>
+  <meta property="og:description" content="Personal trainer digital no bolso. Crie treinos, registre séries em tempo real e acompanhe sua evolução."/>
+  <meta property="og:type" content="website"/>
+  <meta name="theme-color" content="#15171a"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%2315171a'/%3E%3Cpath d='M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106' fill='none' stroke='%23f4f3ee' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='106' cy='60' r='6' fill='%23c5f04a'/%3E%3C/svg%3E"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 60px auto; padding: 0 24px; color: #333; text-align: center; }
-    h1 { color: #1565C0; font-size: 2.5rem; }
-    p { font-size: 1.1rem; color: #555; }
-    a { color: #1565C0; }
+    /* ── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:         #f4f3ee;
+      --surface:    #ffffff;
+      --surfaceAlt: #ecefd9;
+      --line:       #e3e1d8;
+      --ink:        #15171a;
+      --ink2:       #3a3d42;
+      --muted:      #6b6f76;
+      --accent:     #c5f04a;
+      --accentInk:  #1f2310;
+      --accentDeep: #a4cf2a;
+      --deep:       #1f2310;
+      --deepInk:    #f4f3ee;
+      --deepMuted:  #a8b08a;
+      --danger:     #e0533c;
+      --success:    #7ba98a;
+
+      --shadow-sm: 0 2px 6px -2px rgba(20,22,26,.08);
+      --shadow-md: 0 10px 24px -12px rgba(20,22,26,.18);
+      --shadow-lg: 0 30px 60px -24px rgba(20,22,26,.28);
+
+      --r-xs:   6px;
+      --r-sm:  10px;
+      --r-md:  14px;
+      --r-lg:  18px;
+      --r-xl:  24px;
+      --r-pill: 999px;
+
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+    }
+
+    /* ── Base ─────────────────────────────────────────────── */
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navbar ─────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(244,243,238,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 0 24px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ink);
+    }
+    .nav-logo-word {
+      font-size: 22px; font-weight: 600; letter-spacing: -1px;
+    }
+    .nav-logo-dot { color: var(--accent); }
+    .nav-cta {
+      height: 40px; padding: 0 18px; border-radius: var(--r-lg);
+      background: var(--ink); color: var(--bg);
+      font-family: var(--font-sans); font-weight: 500; font-size: 14px;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      transition: background 180ms ease, transform 120ms ease;
+    }
+    .nav-cta:hover { background: var(--ink2); transform: translateY(-1px); }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: 80px 24px 40px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .hero-kicker {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .hero-headline {
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 600; letter-spacing: -2.5px; line-height: 0.96;
+      margin-bottom: 20px;
+    }
+    .hero-headline em { font-style: normal; color: var(--ink); }
+    .hero-headline .hl { position: relative; display: inline-block; }
+    .hero-headline .hl::after {
+      content: ''; position: absolute;
+      left: 0; bottom: 4px; width: 100%; height: 8px;
+      background: var(--accent); z-index: -1; border-radius: 3px;
+    }
+    .hero-sub {
+      font-size: 17px; color: var(--ink2); line-height: 1.55;
+      margin-bottom: 32px; max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      height: 56px; padding: 0 24px; border-radius: var(--r-lg);
+      background: var(--ink); color: var(--bg);
+      font-family: var(--font-sans); font-weight: 500; font-size: 16px;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: var(--shadow-md);
+      transition: background 180ms ease, transform 140ms ease, box-shadow 180ms ease;
+    }
+    .btn-primary:hover {
+      background: var(--ink2); transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .btn-ghost {
+      height: 56px; padding: 0 24px; border-radius: var(--r-lg);
+      background: transparent; color: var(--ink);
+      border: 1px solid var(--line);
+      font-family: var(--font-sans); font-weight: 500; font-size: 16px;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+    .btn-ghost:hover { border-color: var(--ink); background: var(--surface); }
+
+    .hero-social {
+      display: flex; gap: 16px; align-items: center;
+      margin-top: 24px;
+      font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+    }
+    .hero-social span { display: flex; align-items: center; gap: 6px; }
+    .dot-green {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--success); display: inline-block;
+    }
+
+    /* ── Phone Mockup ─────────────────────────────────────── */
+    .phone-wrap {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .phone-wrap::before {
+      content: '';
+      position: absolute; inset: -40px;
+      background: radial-gradient(ellipse at 50% 60%, rgba(197,240,74,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .phone-shell {
+      width: 280px; border-radius: 46px;
+      background: var(--ink); padding: 7px;
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,.06) inset;
+      position: relative; z-index: 1;
+    }
+    .phone-screen {
+      border-radius: 39px; overflow: hidden;
+      background: var(--bg);
+      font-family: var(--font-sans);
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px 4px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    }
+    .battery-icon {
+      width: 18px; height: 9px;
+      border: 1.5px solid currentColor; border-radius: 2px; position: relative;
+    }
+    .battery-icon::before {
+      content: ''; position: absolute; inset: 1.5px;
+      background: currentColor; border-radius: 1px;
+    }
+    .battery-icon::after {
+      content: ''; position: absolute;
+      right: -4px; top: 50%; transform: translateY(-50%);
+      width: 2px; height: 5px;
+      background: currentColor; border-radius: 1px;
+    }
+
+    /* Screen content */
+    .screen-pad { padding: 8px 16px 16px; }
+    .screen-topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px;
+    }
+    .screen-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--surfaceAlt);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .screen-greeting-kicker {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .screen-greeting {
+      font-size: 22px; font-weight: 600; letter-spacing: -0.8px; line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .screen-next-card {
+      padding: 14px; border-radius: var(--r-lg);
+      background: var(--accent); color: var(--accentInk);
+      margin-bottom: 10px;
+    }
+    .screen-next-meta {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .screen-next-title {
+      font-size: 16px; font-weight: 600; margin-bottom: 6px;
+    }
+    .screen-next-exercises {
+      font-family: var(--font-mono); font-size: 10px;
+      display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .screen-next-cta {
+      padding: 8px 12px; border-radius: 10px;
+      background: var(--accentInk); color: var(--accent);
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 500; font-size: 12px;
+    }
+    .screen-stats-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-bottom: 8px;
+    }
+    .screen-stat-card {
+      padding: 12px; border-radius: var(--r-lg);
+      border: 1px solid var(--line); background: var(--surface);
+    }
+    .screen-stat-label {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .screen-stat-value {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 500;
+    }
+    .screen-stat-unit { font-size: 11px; color: var(--muted); }
+    .screen-stat-delta {
+      font-family: var(--font-mono); font-size: 9px; color: var(--success);
+      margin-top: 2px;
+    }
+    .screen-chart-card {
+      padding: 12px; border-radius: var(--r-lg);
+      border: 1px solid var(--line); background: var(--surface);
+      margin-bottom: 10px;
+    }
+    .screen-chart-label {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .mini-bars {
+      display: flex; align-items: flex-end; gap: 4px; height: 40px;
+    }
+    .mini-bars-labels {
+      display: flex; margin-top: 5px;
+    }
+    .mini-bars-labels span {
+      flex: 1; text-align: center;
+      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+    }
+    .mini-bar {
+      flex: 1; border-radius: 3px; background: var(--line);
+    }
+    .mini-bar.hi { background: var(--accent); }
+
+    /* Bottom nav */
+    .screen-bottom-nav {
+      margin: 0 -16px -16px;
+      padding: 8px 6px;
+      background: var(--ink); border-radius: 0 0 39px 39px;
+      display: flex; align-items: center; justify-content: space-around;
+    }
+    .nav-item {
+      padding: 6px 10px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--bg); opacity: 0.5;
+    }
+    .nav-item.active {
+      background: var(--accent); color: var(--accentInk); opacity: 1;
+    }
+
+    /* ── Section wrapper ─────────────────────────────────── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 80px 24px; }
+    .section-kicker {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 600; letter-spacing: -1.5px; line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: var(--ink2); line-height: 1.55;
+      max-width: 520px;
+    }
+
+    /* ── Divider ─────────────────────────────────────────── */
+    .divider {
+      max-width: 1100px; margin: 0 auto;
+      height: 1px; background: var(--line);
+    }
+
+    /* ── Features Grid ───────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      padding: 28px; border-radius: var(--r-xl);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .feature-card.accent-card {
+      background: var(--accent); border-color: transparent;
+    }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: var(--r-lg);
+      background: var(--surfaceAlt); margin-bottom: 18px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-card.accent-card .feature-icon {
+      background: rgba(31,35,16,.12);
+    }
+    .feature-title {
+      font-size: 18px; font-weight: 600; letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .feature-desc {
+      font-size: 14px; color: var(--ink2); line-height: 1.6;
+    }
+    .feature-card.accent-card .feature-title,
+    .feature-card.accent-card .feature-desc { color: var(--accentInk); }
+
+    /* ── Screens Showcase ────────────────────────────────── */
+    .screens-section {
+      background: var(--deep);
+      padding: 80px 0;
+      overflow: hidden;
+    }
+    .screens-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    }
+    .screens-inner .section-kicker { color: var(--deepMuted); }
+    .screens-inner .section-title { color: var(--deepInk); }
+    .screens-inner .section-sub { color: var(--deepMuted); }
+    .screens-row {
+      display: flex; gap: 24px;
+      margin-top: 48px; overflow-x: auto;
+      padding-bottom: 16px; justify-content: center;
+    }
+    .screens-row::-webkit-scrollbar { display: none; }
+    .screen-label {
+      text-align: center; margin-top: 16px;
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--deepMuted);
+    }
+
+    /* Phone 2 — Treino ativo (dark) */
+    .phone-dark .phone-shell { background: var(--surfaceAlt); }
+    .phone-dark .phone-screen { background: var(--deep); color: var(--deepInk); }
+
+    /* Active screen content */
+    .active-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 16px;
+    }
+    .active-dot {
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      color: var(--deepMuted);
+    }
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .active-body { padding: 0 16px 16px; }
+    .active-kicker {
+      font-family: var(--font-mono); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--deepMuted); margin-bottom: 3px;
+    }
+    .active-exname {
+      font-size: 22px; font-weight: 600; letter-spacing: -0.8px; line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .active-chips { display: flex; gap: 6px; margin-bottom: 14px; }
+    .dark-chip {
+      font-family: var(--font-mono); font-size: 9px;
+      padding: 4px 8px; border-radius: var(--r-pill);
+      background: rgba(255,255,255,.06); color: var(--deepInk);
+    }
+    .active-inputs-card {
+      padding: 12px; border-radius: var(--r-lg);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      margin-bottom: 12px;
+    }
+    .active-inputs-header {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 9px; color: var(--deepMuted);
+      margin-bottom: 10px;
+    }
+    .active-inputs-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .dark-input {
+      padding: 8px 10px; border-radius: var(--r-md);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .dark-input-label {
+      font-family: var(--font-mono); font-size: 8px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--deepMuted); margin-bottom: 3px;
+    }
+    .dark-input-value {
+      font-family: var(--font-mono); font-size: 20px; font-weight: 500;
+    }
+    .active-sets {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 6px;
+      margin-bottom: 12px;
+    }
+    .set-box {
+      height: 40px; border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    }
+    .set-box.done { background: var(--accent); color: var(--accentInk); }
+    .set-box.current {
+      background: rgba(255,255,255,.06);
+      border: 2px solid var(--accent); color: var(--deepInk);
+    }
+    .set-box.pending { background: rgba(255,255,255,.06); color: var(--deepMuted); }
+    .active-rest {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; border-radius: var(--r-lg);
+      background: rgba(255,255,255,.06);
+      margin-bottom: 10px;
+    }
+    .rest-label {
+      font-family: var(--font-mono); font-size: 8px;
+      color: var(--deepMuted); text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 2px;
+    }
+    .rest-timer {
+      font-family: var(--font-mono); font-size: 22px; font-weight: 500;
+    }
+    .rest-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .active-cta {
+      height: 48px; border-radius: var(--r-lg);
+      background: var(--accent); color: var(--accentInk);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px; letter-spacing: -0.2px;
+    }
+
+    /* Phone 3 — Progresso */
+    .prog-body { padding: 0 16px 16px; }
+    .prog-title {
+      font-size: 18px; font-weight: 600; letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+    .prog-chips { display: flex; gap: 5px; margin-bottom: 12px; flex-wrap: wrap; }
+    .prog-chip {
+      padding: 4px 8px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 9px;
+      border: 1px solid var(--line); color: var(--ink);
+    }
+    .prog-chip.active {
+      background: var(--ink); color: var(--bg); border-color: transparent;
+    }
+    .prog-card {
+      padding: 12px; border-radius: var(--r-lg);
+      border: 1px solid var(--line); background: var(--surface);
+      margin-bottom: 10px;
+    }
+    .prog-card-label {
+      font-family: var(--font-mono); font-size: 8px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .prog-card-value {
+      display: flex; align-items: baseline; gap: 4px;
+    }
+    .prog-big {
+      font-family: var(--font-mono); font-size: 28px; font-weight: 500;
+    }
+    .prog-unit { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+    .prog-delta {
+      margin-left: 6px; padding: 2px 6px; border-radius: 5px;
+      background: var(--surfaceAlt);
+      font-family: var(--font-mono); font-size: 9px; color: var(--success);
+    }
+    .sparkline-wrap { margin-top: 10px; }
+    .muscle-rows { display: flex; flex-direction: column; gap: 6px; }
+    .muscle-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .muscle-name {
+      font-size: 11px; font-weight: 500; width: 44px; flex-shrink: 0;
+    }
+    .muscle-bar-wrap {
+      flex: 1; height: 7px; background: var(--surfaceAlt);
+      border-radius: 4px; overflow: hidden;
+    }
+    .muscle-bar { height: 100%; background: var(--ink); border-radius: 4px; }
+    .muscle-pct {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--success); width: 32px; text-align: right;
+    }
+
+    /* ── How it works ───────────────────────────────────── */
+    .how-section { background: var(--surface); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 48px;
+    }
+    .step { display: flex; flex-direction: column; gap: 12px; }
+    .step-num {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); display: flex; align-items: center; gap: 8px;
+    }
+    .step-num::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+    .step-title {
+      font-size: 20px; font-weight: 600; letter-spacing: -0.5px;
+    }
+    .step-desc { font-size: 14px; color: var(--ink2); line-height: 1.6; }
+
+    /* ── CTA ─────────────────────────────────────────────── */
+    .cta-section {
+      text-align: center; padding: 100px 24px;
+    }
+    .cta-section .section-title { text-align: center; }
+    .cta-section .section-sub {
+      text-align: center; margin: 0 auto 40px;
+    }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .play-badge {
+      display: inline-flex; align-items: center; gap: 12px;
+      height: 56px; padding: 0 20px; border-radius: var(--r-lg);
+      background: var(--ink); color: var(--bg);
+      text-decoration: none;
+      box-shadow: var(--shadow-md);
+      transition: transform 140ms ease, box-shadow 180ms ease;
+    }
+    .play-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .play-badge-text { display: flex; flex-direction: column; align-items: flex-start; }
+    .play-badge-top {
+      font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.5px; opacity: .7;
+    }
+    .play-badge-bot {
+      font-family: var(--font-sans); font-size: 16px; font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 24px;
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 18px; font-weight: 600; letter-spacing: -0.8px;
+      color: var(--ink); text-decoration: none;
+    }
+    .footer-links {
+      display: flex; gap: 24px; align-items: center;
+    }
+    .footer-links a {
+      font-size: 13px; color: var(--muted); text-decoration: none;
+      transition: color 150ms ease;
+    }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy {
+      font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    }
+    footer > * { flex: 1; }
+    footer > *:nth-child(2) { display: flex; justify-content: center; }
+    footer > *:nth-child(3) { display: flex; justify-content: flex-end; }
+
+    /* ── Responsive ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 20px 32px;
+        gap: 40px;
+        text-align: center;
+      }
+      .hero-actions { justify-content: center; }
+      .hero-social { justify-content: center; }
+      .hero-sub { margin: 0 auto 32px; }
+      .phone-wrap::before { display: none; }
+
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      .screens-row { justify-content: flex-start; padding: 0 20px 16px; }
+      .screens-inner { padding: 0; }
+      .screens-inner .section-kicker,
+      .screens-inner .section-title,
+      .screens-inner .section-sub { padding: 0 20px; }
+
+      footer { flex-direction: column; text-align: center; }
+      footer > * { justify-content: center !important; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline { letter-spacing: -1.5px; }
+    }
+
+    /* ── Animations ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content > * {
+      animation: fadeUp 400ms cubic-bezier(.16,1,.3,1) both;
+    }
+    .hero-content > *:nth-child(1) { animation-delay: 0ms; }
+    .hero-content > *:nth-child(2) { animation-delay: 60ms; }
+    .hero-content > *:nth-child(3) { animation-delay: 120ms; }
+    .hero-content > *:nth-child(4) { animation-delay: 180ms; }
+    .hero-content > *:nth-child(5) { animation-delay: 240ms; }
+    .phone-wrap {
+      animation: fadeUp 500ms 100ms cubic-bezier(.16,1,.3,1) both;
+    }
   </style>
 </head>
 <body>
-  <h1>💪 App Academia</h1>
-  <p>Personal trainer digital. Registre treinos, acompanhe seu progresso e receba sugestões de carga personalizadas.</p>
-  <br/>
-  <a href="privacidade.html">Política de Privacidade</a>
+
+  <!-- ── Navbar ───────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 120 120" width="28" height="28" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="3"/>
+        <path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106"
+          fill="none" stroke="#15171a" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="106" cy="60" r="6" fill="#c5f04a"/>
+      </svg>
+      <span class="nav-logo-word">pulsus<span class="nav-logo-dot">.</span></span>
+    </a>
+    <a href="https://play.google.com/store" class="nav-cta" aria-label="Baixar na Google Play">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2v13m0 0l-4-4m4 4l4-4M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
+      </svg>
+      Baixar
+    </a>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="hero" aria-label="Apresentação do Pulsus">
+    <div class="hero-content">
+      <p class="hero-kicker">Personal trainer no bolso</p>
+      <h1 class="hero-headline">
+        Treine.<br/>
+        Registre.<br/>
+        <span class="hl">Evolua.</span>
+      </h1>
+      <p class="hero-sub">
+        O Pulsus acompanha cada série, sugere progressão de carga e mostra sua evolução real — para você focar no que importa: treinar.
+      </p>
+      <div class="hero-actions">
+        <a href="https://play.google.com/store" class="btn-primary" aria-label="Baixar Pulsus na Google Play">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3.18 23.5c.25.14.53.2.8.2.34 0 .68-.09.98-.27l14.4-8.33-3.13-3.13L3.18 23.5z"/>
+            <path d="M1.58 1.2A1.55 1.55 0 001 2.5v19c0 .5.22.96.58 1.3l.08.07 10.65-10.65v-.25L1.66 1.13l-.08.07z"/>
+            <path d="M19.44 10.17L16.23 7l-3.92 3.92 3.92 3.92 3.21-1.85c.92-.53.92-1.39 0-1.92-.19-.11-.19-.11 0 0z"/>
+            <path d="M3.98.73L16.23 7 13.1 10.13 2.45.74a1.58 1.58 0 011.53-.01z"/>
+          </svg>
+          Disponível no Google Play
+        </a>
+      </div>
+      <div class="hero-social">
+        <span><span class="dot-green"></span> Gratuito para baixar</span>
+        <span>·</span>
+        <span>Android 8.0+</span>
+      </div>
+    </div>
+
+    <!-- Phone Mockup — HomeScreen -->
+    <div class="phone-wrap" aria-hidden="true">
+      <div class="phone-shell">
+        <div class="phone-screen">
+          <!-- Status bar -->
+          <div class="status-bar">
+            <span>9:41</span>
+            <span class="battery-icon"></span>
+          </div>
+          <!-- Content -->
+          <div class="screen-pad">
+            <div class="screen-topbar">
+              <svg viewBox="0 0 120 120" width="26" height="26">
+                <circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="3"/>
+                <path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106"
+                  fill="none" stroke="#15171a" stroke-width="6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="106" cy="60" r="6" fill="#c5f04a"/>
+              </svg>
+              <div class="screen-avatar">ML</div>
+            </div>
+
+            <div class="screen-greeting-kicker">QUARTA · SEMANA 14</div>
+            <div class="screen-greeting">
+              Oi, Maria.<br/>Treino A pronto.
+            </div>
+
+            <div class="screen-next-card">
+              <div class="screen-next-meta">
+                <span>PRÓXIMO · 18:30</span>
+                <span>~48 MIN</span>
+              </div>
+              <div class="screen-next-title">Peito &amp; tríceps</div>
+              <div class="screen-next-exercises">
+                <span>supino</span><span>·</span><span>inclinado</span><span>·</span><span>+3</span>
+              </div>
+              <div class="screen-next-cta">
+                <span>começar agora</span>
+                <span>→</span>
+              </div>
+            </div>
+
+            <div class="screen-stats-row">
+              <div class="screen-stat-card">
+                <div class="screen-stat-label">Volume · semana</div>
+                <div class="screen-stat-value">12.4<span class="screen-stat-unit">t</span></div>
+                <div class="screen-stat-delta">+8%</div>
+              </div>
+              <div class="screen-stat-card">
+                <div class="screen-stat-label">Streak</div>
+                <div class="screen-stat-value">14<span class="screen-stat-unit"> dias</span></div>
+                <div class="screen-stat-delta" style="color:var(--muted);">rec: 21</div>
+              </div>
+            </div>
+
+            <div class="screen-chart-card">
+              <div class="screen-chart-label">Volume · 7 dias</div>
+              <div class="mini-bars">
+                <div class="mini-bar" style="height:37%"></div>
+                <div class="mini-bar" style="height:63%"></div>
+                <div class="mini-bar" style="height:47%"></div>
+                <div class="mini-bar" style="height:83%"></div>
+                <div class="mini-bar" style="height:50%"></div>
+                <div class="mini-bar hi" style="height:100%"></div>
+                <div class="mini-bar" style="height:30%"></div>
+              </div>
+              <div class="mini-bars-labels">
+                <span>s</span><span>t</span><span>q</span>
+                <span>q</span><span>s</span><span>s</span><span>d</span>
+              </div>
+            </div>
+
+            <div class="screen-bottom-nav">
+              <div class="nav-item active">hoje</div>
+              <div class="nav-item">treinos</div>
+              <div class="nav-item">progresso</div>
+              <div class="nav-item">eu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ─────────────────────────────────────────── -->
+  <div class="divider"></div>
+  <section class="section" aria-labelledby="features-title">
+    <p class="section-kicker">O que o Pulsus faz</p>
+    <h2 class="section-title" id="features-title">Tudo que você precisa<br/>para evoluir de verdade</h2>
+    <p class="section-sub">Sem planilha, sem caderno. Só você, o treino e os números certos na hora certa.</p>
+    <div class="features-grid">
+
+      <div class="feature-card accent-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f2310" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 12h3l3-8 4 16 3-8h7"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Registro em tempo real</h3>
+        <p class="feature-desc">Confirme cada série com um toque. O app registra carga, reps e tempo de descanso automaticamente.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Progressão inteligente</h3>
+        <p class="feature-desc">Sugestões de carga baseadas no seu histórico real. Sobrecargas progressivas sem achismo.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20V10m0-6v2M6 20v-4m0-6v2M18 20v-8m0-4v2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Evolução visível</h3>
+        <p class="feature-desc">Gráfico de 1RM estimado, volume por semana, streak e novos recordes — tudo num só lugar.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="4"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Treinos personalizados</h3>
+        <p class="feature-desc">Monte seus treinos do zero. Reordene exercícios arrastando, edite séries e salve templates.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3 3"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Timer de descanso</h3>
+        <p class="feature-desc">Arco circular que conta o descanso automaticamente e vibra quando é hora de voltar à barra.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Histórico por exercício</h3>
+        <p class="feature-desc">Acesse o histórico de qualquer exercício, veja seus PRs em destaque e acompanhe a curva de força.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Screens Showcase ──────────────────────────────────── -->
+  <section class="screens-section" aria-labelledby="screens-title">
+    <div class="screens-inner">
+      <p class="section-kicker">Interface</p>
+      <h2 class="section-title" id="screens-title">Desenhado para o momento<br/>do treino</h2>
+      <p class="section-sub">Modo foco escuro para não perder a concentração. Números grandes, toques largos.</p>
+    </div>
+
+    <div class="screens-row" role="list">
+      <!-- Phone: Home -->
+      <div style="flex-shrink:0; text-align:center;" role="listitem">
+        <div class="phone-shell" style="width:240px;">
+          <div class="phone-screen" style="background:var(--bg);">
+            <div class="status-bar"><span>9:41</span><span class="battery-icon"></span></div>
+            <div class="screen-pad">
+              <div class="screen-topbar">
+                <svg viewBox="0 0 120 120" width="22" height="22"><circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="3"/><path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106" fill="none" stroke="#15171a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="106" cy="60" r="6" fill="#c5f04a"/></svg>
+                <div class="screen-avatar" style="width:28px;height:28px;font-size:10px;">ML</div>
+              </div>
+              <div class="screen-greeting-kicker" style="font-size:9px;">QUARTA · SEMANA 14</div>
+              <div class="screen-greeting" style="font-size:18px;margin-bottom:10px;">Oi, Maria.<br/>Treino A pronto.</div>
+              <div class="screen-next-card" style="padding:12px;border-radius:14px;">
+                <div class="screen-next-meta" style="font-size:8px;">
+                  <span>PRÓXIMO · 18:30</span><span>~48 MIN</span>
+                </div>
+                <div class="screen-next-title" style="font-size:14px;">Peito &amp; tríceps</div>
+                <div class="screen-next-exercises" style="font-size:9px;margin-bottom:8px;"><span>supino · inclinado · +3</span></div>
+                <div class="screen-next-cta" style="font-size:11px;padding:6px 10px;border-radius:8px;">
+                  <span>começar agora</span><span>→</span>
+                </div>
+              </div>
+              <div class="screen-stats-row" style="margin-top:8px;">
+                <div class="screen-stat-card" style="padding:10px;">
+                  <div class="screen-stat-label">Volume</div>
+                  <div class="screen-stat-value" style="font-size:18px;">12.4<span class="screen-stat-unit">t</span></div>
+                </div>
+                <div class="screen-stat-card" style="padding:10px;">
+                  <div class="screen-stat-label">Streak</div>
+                  <div class="screen-stat-value" style="font-size:18px;">14<span class="screen-stat-unit">d</span></div>
+                </div>
+              </div>
+              <div class="screen-bottom-nav" style="margin:8px -16px -16px;">
+                <div class="nav-item active" style="font-size:9px;padding:5px 8px;">hoje</div>
+                <div class="nav-item" style="font-size:9px;">treinos</div>
+                <div class="nav-item" style="font-size:9px;">prog.</div>
+                <div class="nav-item" style="font-size:9px;">eu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label">01 · hoje</div>
+      </div>
+
+      <!-- Phone: Active (dark) -->
+      <div style="flex-shrink:0; text-align:center;" role="listitem">
+        <div class="phone-shell" style="width:240px; background:#3a3d42;">
+          <div class="phone-screen" style="background:var(--deep);color:var(--deepInk);">
+            <div class="status-bar" style="color:var(--deepInk);">
+              <span>9:41</span><span class="battery-icon"></span>
+            </div>
+            <div class="screen-pad">
+              <div class="active-header" style="padding:0 0 10px;">
+                <div class="active-dot">
+                  <div class="pulse-dot"></div>
+                  <span style="font-size:9px;">EM TREINO · 22:14</span>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:9px;color:var(--deepMuted);">3/6</span>
+              </div>
+              <div class="active-kicker">EXERCÍCIO ATUAL</div>
+              <div class="active-exname" style="font-size:20px;">Supino reto</div>
+              <div class="active-chips" style="margin-bottom:12px;">
+                <span class="dark-chip">barra</span>
+                <span class="dark-chip">peito</span>
+              </div>
+              <div class="active-inputs-card" style="margin-bottom:10px;">
+                <div class="active-inputs-header" style="font-size:8px;">
+                  <span>SÉRIE 3 DE 4</span>
+                  <span>ANT: 80kg×8</span>
+                </div>
+                <div class="active-inputs-row">
+                  <div class="dark-input">
+                    <div class="dark-input-label">CARGA</div>
+                    <div class="dark-input-value" style="font-size:18px;">80<span style="font-size:11px;color:var(--deepMuted);">kg</span></div>
+                  </div>
+                  <div class="dark-input">
+                    <div class="dark-input-label">REPS</div>
+                    <div class="dark-input-value" style="font-size:18px;">8</div>
+                  </div>
+                </div>
+              </div>
+              <div class="active-sets" style="gap:5px;margin-bottom:10px;">
+                <div class="set-box done" style="height:36px;font-size:11px;">✓</div>
+                <div class="set-box done" style="height:36px;font-size:11px;">✓</div>
+                <div class="set-box current" style="height:36px;font-size:11px;">•</div>
+                <div class="set-box pending" style="height:36px;font-size:11px;color:var(--deepMuted);">4</div>
+              </div>
+              <div class="active-rest" style="padding:8px 12px;margin-bottom:10px;">
+                <div>
+                  <div class="rest-label">DESCANSO</div>
+                  <div class="rest-timer" style="font-size:20px;">01:24</div>
+                </div>
+                <div class="rest-btn" style="width:34px;height:34px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#f4f3ee"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                </div>
+              </div>
+              <div class="active-cta" style="height:44px;font-size:12px;">
+                ✓ confirmar série · 80kg × 8
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label">02 · treino ativo</div>
+      </div>
+
+      <!-- Phone: Progress -->
+      <div style="flex-shrink:0; text-align:center;" role="listitem">
+        <div class="phone-shell" style="width:240px;">
+          <div class="phone-screen" style="background:var(--bg);">
+            <div class="status-bar"><span>9:41</span><span class="battery-icon"></span></div>
+            <div class="screen-pad">
+              <div class="screen-topbar" style="margin-bottom:10px;">
+                <div style="font-size:18px;font-weight:600;letter-spacing:-0.5px;">Progresso</div>
+                <div style="width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+                </div>
+              </div>
+              <div class="prog-chips" style="gap:4px;margin-bottom:10px;">
+                <span class="prog-chip" style="font-size:8px;padding:3px 7px;">7d</span>
+                <span class="prog-chip active" style="font-size:8px;padding:3px 7px;">30d</span>
+                <span class="prog-chip" style="font-size:8px;padding:3px 7px;">12sem</span>
+                <span class="prog-chip" style="font-size:8px;padding:3px 7px;">1a</span>
+              </div>
+              <div class="prog-card" style="padding:10px;margin-bottom:10px;">
+                <div class="prog-card-label">1RM ESTIMADO · SUPINO</div>
+                <div class="prog-card-value">
+                  <span class="prog-big" style="font-size:26px;">87.5</span>
+                  <span class="prog-unit">kg</span>
+                  <span class="prog-delta">+5.5kg</span>
+                </div>
+                <div class="sparkline-wrap">
+                  <svg viewBox="0 0 200 50" width="100%" height="40">
+                    <path d="M0 42 L18 36 L36 44 L54 30 L72 22 L90 28 L108 16 L126 22 L144 10 L162 16 L180 8 L200 2"
+                      fill="none" stroke="#15171a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="200" cy="2" r="4" fill="#c5f04a" stroke="#15171a" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Por grupo muscular</div>
+              <div class="muscle-rows">
+                <div class="muscle-row">
+                  <span class="muscle-name" style="font-size:10px;">peito</span>
+                  <div class="muscle-bar-wrap"><div class="muscle-bar" style="width:86%"></div></div>
+                  <span class="muscle-pct" style="font-size:9px;">+12%</span>
+                </div>
+                <div class="muscle-row">
+                  <span class="muscle-name" style="font-size:10px;">costas</span>
+                  <div class="muscle-bar-wrap"><div class="muscle-bar" style="width:72%"></div></div>
+                  <span class="muscle-pct" style="font-size:9px;">+8%</span>
+                </div>
+                <div class="muscle-row">
+                  <span class="muscle-name" style="font-size:10px;">pernas</span>
+                  <div class="muscle-bar-wrap"><div class="muscle-bar" style="width:92%"></div></div>
+                  <span class="muscle-pct" style="font-size:9px;">+18%</span>
+                </div>
+                <div class="muscle-row">
+                  <span class="muscle-name" style="font-size:10px;">ombro</span>
+                  <div class="muscle-bar-wrap"><div class="muscle-bar" style="width:48%"></div></div>
+                  <span class="muscle-pct" style="font-size:9px;">+3%</span>
+                </div>
+              </div>
+              <div class="screen-bottom-nav" style="margin:10px -16px -16px;">
+                <div class="nav-item" style="font-size:9px;padding:5px 8px;">hoje</div>
+                <div class="nav-item" style="font-size:9px;">treinos</div>
+                <div class="nav-item active" style="font-size:9px;padding:5px 8px;">prog.</div>
+                <div class="nav-item" style="font-size:9px;">eu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label">03 · progresso</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Como funciona ─────────────────────────────────────── -->
+  <section class="how-section" aria-labelledby="how-title">
+    <div class="section">
+      <p class="section-kicker">Como funciona</p>
+      <h2 class="section-title" id="how-title">Simples do começo ao fim</h2>
+      <p class="section-sub">Três passos para transformar cada ida à academia num dado real de evolução.</p>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <h3 class="step-title">Monte seu treino</h3>
+          <p class="step-desc">Crie treinos personalizados com os exercícios que você faz, na ordem que prefere. Ou use um modelo pronto e adapte.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h3 class="step-title">Registre cada série</h3>
+          <p class="step-desc">No modo foco, a tela escurece e mostra só o que importa: carga, reps e o timer de descanso. Confirme com um toque.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h3 class="step-title">Acompanhe a evolução</h3>
+          <p class="step-desc">Veja seu 1RM estimado crescer, novos recordes aparecerem e o volume semanal subir — tudo automaticamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Final ─────────────────────────────────────────── -->
+  <div class="divider"></div>
+  <section class="section cta-section" aria-labelledby="cta-title">
+    <p class="section-kicker" style="text-align:center;">Grátis para baixar</p>
+    <h2 class="section-title" id="cta-title">Pronto para o<br/>próximo PR?</h2>
+    <p class="section-sub">
+      Junte-se a quem já treina com dados reais. Baixe o Pulsus e comece hoje.
+    </p>
+    <div class="cta-buttons">
+      <a href="https://play.google.com/store" class="play-badge" aria-label="Baixar Pulsus na Google Play Store">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3.18 23.5c.25.14.53.2.8.2.34 0 .68-.09.98-.27l14.4-8.33-3.13-3.13L3.18 23.5z"/>
+          <path d="M1.58 1.2A1.55 1.55 0 001 2.5v19c0 .5.22.96.58 1.3l.08.07 10.65-10.65v-.25L1.66 1.13l-.08.07z"/>
+          <path d="M19.44 10.17L16.23 7l-3.92 3.92 3.92 3.92 3.21-1.85c.92-.53.92-1.39 0-1.92z"/>
+          <path d="M3.98.73L16.23 7 13.1 10.13 2.45.74a1.58 1.58 0 011.53-.01z"/>
+        </svg>
+        <div class="play-badge-text">
+          <span class="play-badge-top">Disponível no</span>
+          <span class="play-badge-bot">Google Play</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <div class="divider"></div>
+  <footer>
+    <a href="#" class="footer-logo">
+      <svg viewBox="0 0 120 120" width="20" height="20" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="4"/>
+        <path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106"
+          fill="none" stroke="#15171a" stroke-width="7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="106" cy="60" r="7" fill="#c5f04a"/>
+      </svg>
+      pulsus<span class="nav-logo-dot">.</span>
+    </a>
+    <nav class="footer-links" aria-label="Links do rodapé">
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="mailto:hugoleandroantunes@gmail.com">Contato</a>
+    </nav>
+    <p class="footer-copy">© 2026 Pulsus. Todos os direitos reservados.</p>
+  </footer>
+
 </body>
 </html>

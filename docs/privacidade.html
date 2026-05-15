@@ -1,45 +1,445 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Política de Privacidade — App Academia</title>
+  <title>Política de Privacidade — Pulsus</title>
+  <meta name="description" content="Política de privacidade do app Pulsus. Entenda como coletamos, usamos e protegemos seus dados."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%2315171a'/%3E%3Cpath d='M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106' fill='none' stroke='%23f4f3ee' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='106' cy='60' r='6' fill='%23c5f04a'/%3E%3C/svg%3E"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 24px; color: #333; line-height: 1.7; }
-    h1 { color: #1565C0; }
-    h2 { margin-top: 32px; color: #1976D2; }
-    a { color: #1565C0; }
-    footer { margin-top: 48px; font-size: 0.85rem; color: #888; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:         #f4f3ee;
+      --surface:    #ffffff;
+      --surfaceAlt: #ecefd9;
+      --line:       #e3e1d8;
+      --ink:        #15171a;
+      --ink2:       #3a3d42;
+      --muted:      #6b6f76;
+      --accent:     #c5f04a;
+      --accentInk:  #1f2310;
+      --danger:     #e0533c;
+      --success:    #7ba98a;
+
+      --shadow-sm: 0 2px 6px -2px rgba(20,22,26,.08);
+
+      --r-lg:  18px;
+      --r-xl:  24px;
+      --r-pill: 999px;
+
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navbar ─────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(244,243,238,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--ink);
+      font-size: 20px; font-weight: 600; letter-spacing: -0.8px;
+    }
+    .nav-logo-dot { color: var(--accent); }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      padding: 8px 14px; border-radius: var(--r-pill);
+      border: 1px solid var(--line);
+      transition: color 150ms ease, border-color 150ms ease;
+    }
+    .nav-back:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* ── Layout ──────────────────────────────── */
+    main {
+      max-width: 720px; margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .doc-header { margin-bottom: 48px; }
+    .doc-kicker {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .doc-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 600; letter-spacing: -1.8px; line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .doc-meta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: var(--r-pill);
+      border: 1px solid var(--line); background: var(--surface);
+      font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── Intro card ──────────────────────────── */
+    .intro-card {
+      padding: 24px; border-radius: var(--r-xl);
+      background: var(--surfaceAlt);
+      margin-bottom: 48px;
+    }
+    .intro-card p {
+      font-size: 15px; color: var(--ink2); line-height: 1.65;
+    }
+    .intro-card p + p { margin-top: 12px; }
+    .intro-card strong { color: var(--ink); font-weight: 600; }
+
+    /* ── Sections ────────────────────────────── */
+    .policy-section {
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--line);
+    }
+    .policy-section:last-child {
+      border-bottom: none; padding-bottom: 0;
+    }
+    .section-num {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 22px; font-weight: 600; letter-spacing: -0.6px;
+      color: var(--ink); margin-bottom: 16px;
+    }
+    p {
+      font-size: 15px; color: var(--ink2); line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    p:last-child { margin-bottom: 0; }
+    ul, ol {
+      padding-left: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 12px;
+    }
+    li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 15px; color: var(--ink2); line-height: 1.6;
+    }
+    li::before {
+      content: '·';
+      font-family: var(--font-mono); font-weight: 600;
+      color: var(--accent); flex-shrink: 0;
+      background: var(--accentInk);
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; margin-top: 2px;
+    }
+    a { color: var(--ink); font-weight: 500; text-decoration: underline;
+        text-underline-offset: 3px; text-decoration-color: var(--line); }
+    a:hover { text-decoration-color: var(--ink); }
+    strong { color: var(--ink); font-weight: 600; }
+
+    /* ── Highlight box ───────────────────────── */
+    .highlight-box {
+      padding: 18px 20px; border-radius: var(--r-lg);
+      background: var(--surface); border: 1px solid var(--line);
+      margin: 16px 0;
+    }
+    .highlight-box.accent {
+      background: var(--accent); border-color: transparent;
+    }
+    .highlight-box.accent p,
+    .highlight-box.accent li { color: var(--accentInk); }
+    .highlight-box.accent li::before {
+      color: var(--accent); background: var(--accentInk);
+    }
+
+    /* ── Contact card ────────────────────────── */
+    .contact-card {
+      padding: 24px; border-radius: var(--r-xl);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .contact-icon {
+      width: 44px; height: 44px; border-radius: var(--r-lg);
+      background: var(--surfaceAlt);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-text strong {
+      display: block; font-size: 16px; font-weight: 600;
+      letter-spacing: -0.3px; margin-bottom: 4px;
+    }
+    .contact-text p { font-size: 14px; margin-bottom: 0; }
+
+    /* ── Footer ──────────────────────────────── */
+    footer {
+      max-width: 720px; margin: 0 auto;
+      padding: 24px;
+      border-top: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 600; letter-spacing: -0.6px;
+      color: var(--ink); text-decoration: none;
+    }
+    .footer-copy {
+      font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 40px 20px 60px; }
+      footer { flex-direction: column; align-items: flex-start; }
+      .contact-card { flex-direction: column; gap: 12px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Política de Privacidade</h1>
-  <p><strong>App Academia</strong> — Última atualização: 13 de maio de 2026</p>
 
-  <h2>1. Dados que coletamos</h2>
-  <p>Coletamos seu nome e endereço de e-mail por meio do Google Sign-In, além dos dados de treino que você registra voluntariamente no aplicativo (exercícios, cargas, repetições, RPE e tempo de descanso).</p>
+  <!-- ── Navbar ─────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 120 120" width="26" height="26" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="3"/>
+        <path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106"
+          fill="none" stroke="#15171a" stroke-width="6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="106" cy="60" r="6" fill="#c5f04a"/>
+      </svg>
+      pulsus<span class="nav-logo-dot">.</span>
+    </a>
+    <a href="index.html" class="nav-back" aria-label="Voltar para o início">
+      ← início
+    </a>
+  </nav>
 
-  <h2>2. Como usamos os dados</h2>
-  <p>Seus dados são utilizados exclusivamente para:</p>
-  <ul>
-    <li>Exibir seu histórico de treinos dentro do app</li>
-    <li>Gerar sugestões personalizadas de progressão de carga</li>
-    <li>Calcular índices de fadiga e evolução de desempenho</li>
-  </ul>
-  <p>Não vendemos, alugamos nem compartilhamos seus dados com terceiros para fins publicitários.</p>
+  <!-- ── Main Content ──────────────────────────────────────── -->
+  <main>
 
-  <h2>3. Armazenamento e segurança</h2>
-  <p>Os dados são armazenados em servidores com acesso restrito e transmitidos com criptografia (HTTPS). Aplicamos boas práticas de segurança para proteger suas informações.</p>
+    <header class="doc-header">
+      <p class="doc-kicker">Legal</p>
+      <h1 class="doc-title">Política de<br/>Privacidade</h1>
+      <span class="doc-meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Última atualização: 13 de maio de 2026
+      </span>
+    </header>
 
-  <h2>4. Exclusão de dados</h2>
-  <p>Você pode excluir sua conta e todos os seus dados a qualquer momento diretamente pelo aplicativo: <strong>Perfil → Excluir conta</strong>. A exclusão é permanente e irreversível.</p>
+    <div class="intro-card">
+      <p>
+        O <strong>Pulsus</strong> é um aplicativo de treino físico que ajuda você a criar treinos, registrar séries em tempo real e acompanhar sua evolução. Este documento explica de forma clara quais dados coletamos, como os usamos e quais são seus direitos.
+      </p>
+      <p>
+        Levamos sua privacidade a sério. Não vendemos, alugamos nem compartilhamos seus dados com terceiros para fins publicitários.
+      </p>
+    </div>
 
-  <h2>5. Serviços de terceiros</h2>
-  <p>Utilizamos o <a href="https://policies.google.com/privacy" target="_blank">Google Sign-In</a> para autenticação. Consulte a política de privacidade do Google para detalhes sobre os dados processados por eles.</p>
+    <!-- 1. Dados que coletamos -->
+    <section class="policy-section" id="dados-coletados">
+      <p class="section-num">01</p>
+      <h2>Dados que coletamos</h2>
+      <p>Coletamos apenas o mínimo necessário para oferecer a experiência do app:</p>
+      <div class="highlight-box">
+        <ul>
+          <li><strong>Dados de conta</strong> — nome e endereço de e-mail, obtidos via Google Sign-In no momento do cadastro.</li>
+          <li><strong>Dados de treino</strong> — exercícios, cargas, repetições, RPE (percepção de esforço) e tempos de descanso que você registra voluntariamente no app.</li>
+          <li><strong>Dados técnicos</strong> — versão do app, tipo de dispositivo e informações de erro coletadas automaticamente para fins de diagnóstico. Nenhum dado de identificação pessoal está associado a esses registros.</li>
+        </ul>
+      </div>
+      <p>Não coletamos dados de localização, contatos, câmera ou microfone.</p>
+    </section>
 
-  <h2>6. Contato</h2>
-  <p>Em caso de dúvidas sobre esta política, entre em contato pelo e-mail: <a href="mailto:hugoleandroantunes@gmail.com">hugoleandroantunes@gmail.com</a></p>
+    <!-- 2. Como usamos os dados -->
+    <section class="policy-section" id="uso-dos-dados">
+      <p class="section-num">02</p>
+      <h2>Como usamos os dados</h2>
+      <p>Seus dados são utilizados exclusivamente para:</p>
+      <ul>
+        <li>Exibir seu histórico de treinos dentro do app</li>
+        <li>Gerar sugestões personalizadas de progressão de carga com base no seu histórico real</li>
+        <li>Calcular índices de evolução de desempenho (1RM estimado, volume semanal, streak)</li>
+        <li>Diagnosticar e corrigir erros técnicos do app</li>
+      </ul>
+      <p>Não utilizamos seus dados para publicidade, criação de perfis comerciais ou qualquer finalidade não listada acima.</p>
+    </section>
 
-  <footer>© 2026 App Academia. Todos os direitos reservados.</footer>
+    <!-- 3. Armazenamento e segurança -->
+    <section class="policy-section" id="seguranca">
+      <p class="section-num">03</p>
+      <h2>Armazenamento e segurança</h2>
+      <p>
+        Seus dados são armazenados em servidores com acesso restrito e transmitidos com criptografia em trânsito (HTTPS/TLS). Adotamos boas práticas de segurança da informação para proteger suas informações contra acessos não autorizados, alteração ou divulgação indevida.
+      </p>
+      <div class="highlight-box">
+        <ul>
+          <li>Dados em trânsito protegidos por <strong>TLS 1.2+</strong></li>
+          <li>Acesso restrito aos dados por <strong>autenticação multifator</strong></li>
+          <li>Armazenamento em servidores com <strong>backups periódicos</strong></li>
+        </ul>
+      </div>
+      <p>Nenhum método de transmissão ou armazenamento digital é 100% seguro. Em caso de incidente que afete seus dados, notificaremos você pelo e-mail cadastrado dentro de 72 horas do conhecimento do fato.</p>
+    </section>
+
+    <!-- 4. Retenção de dados -->
+    <section class="policy-section" id="retencao">
+      <p class="section-num">04</p>
+      <h2>Retenção de dados</h2>
+      <p>
+        Mantemos seus dados enquanto sua conta estiver ativa. Após a exclusão da conta, todos os dados pessoais e de treino são apagados permanentemente de nossos servidores em até <strong>30 dias</strong>.
+      </p>
+      <p>
+        Dados técnicos anonimizados (logs de erro sem identificação pessoal) podem ser mantidos por até 12 meses para fins de diagnóstico e melhoria do produto.
+      </p>
+    </section>
+
+    <!-- 5. Exclusão de dados -->
+    <section class="policy-section" id="exclusao">
+      <p class="section-num">05</p>
+      <h2>Exclusão de dados</h2>
+      <p>
+        Você tem controle total sobre seus dados. Para excluir sua conta e todos os dados associados:
+      </p>
+      <div class="highlight-box accent">
+        <p><strong>No app:</strong> acesse <strong>Perfil → Configurações → Excluir conta</strong></p>
+        <p style="margin-top:8px;">A exclusão é permanente e irreversível. Todos os treinos, histórico e dados de conta serão apagados.</p>
+      </div>
+      <p>
+        Se preferir solicitar a exclusão por e-mail, entre em contato em <a href="mailto:hugoleandroantunes@gmail.com">hugoleandroantunes@gmail.com</a> com o assunto "Exclusão de dados — Pulsus".
+      </p>
+    </section>
+
+    <!-- 6. Compartilhamento de dados -->
+    <section class="policy-section" id="compartilhamento">
+      <p class="section-num">06</p>
+      <h2>Compartilhamento de dados</h2>
+      <p>
+        Não vendemos nem alugamos seus dados pessoais. Podemos compartilhá-los apenas nas seguintes situações:
+      </p>
+      <ul>
+        <li><strong>Com prestadores de serviço</strong> essenciais à operação do app (ex.: infraestrutura de servidor), sob contrato de confidencialidade e com acesso restrito ao mínimo necessário.</li>
+        <li><strong>Por obrigação legal</strong>, quando exigido por autoridade competente nos termos da legislação aplicável.</li>
+      </ul>
+    </section>
+
+    <!-- 7. Serviços de terceiros -->
+    <section class="policy-section" id="terceiros">
+      <p class="section-num">07</p>
+      <h2>Serviços de terceiros</h2>
+      <p>
+        O Pulsus utiliza o <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Sign-In</a> para autenticação. O Google pode processar dados como endereço IP e informações do dispositivo de acordo com sua própria <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>, sobre a qual não temos controle.
+      </p>
+      <p>
+        Recomendamos que você revise as políticas dos serviços de terceiros que utilizamos antes de criar sua conta.
+      </p>
+    </section>
+
+    <!-- 8. Seus direitos -->
+    <section class="policy-section" id="direitos">
+      <p class="section-num">08</p>
+      <h2>Seus direitos</h2>
+      <p>
+        Nos termos da Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018), você tem os seguintes direitos em relação aos seus dados pessoais:
+      </p>
+      <ul>
+        <li><strong>Acesso</strong> — solicitar uma cópia dos dados que temos sobre você.</li>
+        <li><strong>Correção</strong> — solicitar a correção de dados incompletos ou desatualizados.</li>
+        <li><strong>Exclusão</strong> — solicitar a exclusão dos seus dados (veja a seção 5).</li>
+        <li><strong>Portabilidade</strong> — solicitar seus dados em formato legível por máquina.</li>
+        <li><strong>Revogação</strong> — revogar o consentimento para o tratamento de dados a qualquer momento.</li>
+        <li><strong>Informação</strong> — ser informado sobre terceiros com quem seus dados são compartilhados.</li>
+      </ul>
+      <p>
+        Para exercer qualquer um desses direitos, entre em contato pelo e-mail indicado na seção de contato abaixo. Responderemos em até <strong>15 dias úteis</strong>.
+      </p>
+    </section>
+
+    <!-- 9. Crianças -->
+    <section class="policy-section" id="criancas">
+      <p class="section-num">09</p>
+      <h2>Crianças e adolescentes</h2>
+      <p>
+        O Pulsus é destinado a pessoas com <strong>18 anos ou mais</strong>. Não coletamos intencionalmente dados de menores de idade. Se tomarmos conhecimento de que coletamos dados de um menor sem consentimento parental verificado, excluiremos essas informações imediatamente.
+      </p>
+    </section>
+
+    <!-- 10. Alterações -->
+    <section class="policy-section" id="alteracoes">
+      <p class="section-num">10</p>
+      <h2>Alterações nesta política</h2>
+      <p>
+        Podemos atualizar esta Política de Privacidade periodicamente. Em caso de alterações relevantes, notificaremos você por e-mail ou por aviso em destaque no app com pelo menos <strong>7 dias de antecedência</strong>.
+      </p>
+      <p>
+        A data da última atualização está sempre indicada no topo deste documento. O uso continuado do app após as alterações implica aceitação da nova política.
+      </p>
+    </section>
+
+    <!-- 11. Contato -->
+    <section class="policy-section" id="contato">
+      <p class="section-num">11</p>
+      <h2>Contato e encarregado de dados</h2>
+      <p>
+        Para dúvidas, solicitações ou reclamações relacionadas a esta política ou ao tratamento dos seus dados pessoais, entre em contato:
+      </p>
+      <div class="contact-card">
+        <div class="contact-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15171a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="contact-text">
+          <strong>Responsável pelo tratamento de dados</strong>
+          <p>
+            <a href="mailto:hugoleandroantunes@gmail.com">hugoleandroantunes@gmail.com</a>
+          </p>
+          <p style="margin-top:6px;font-size:13px;">
+            Você também pode entrar em contato com a <a href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">Autoridade Nacional de Proteção de Dados (ANPD)</a> caso entenda que seus direitos não estão sendo respeitados.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <a href="index.html" class="footer-logo">
+      <svg viewBox="0 0 120 120" width="18" height="18" aria-hidden="true">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#15171a" stroke-width="4"/>
+        <path d="M14 60 H38 L46 42 L58 78 L70 50 L78 66 L86 60 H106"
+          fill="none" stroke="#15171a" stroke-width="7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="106" cy="60" r="7" fill="#c5f04a"/>
+      </svg>
+      pulsus<span style="color:#c5f04a;">.</span>
+    </a>
+    <p class="footer-copy">© 2026 Pulsus. Todos os direitos reservados.</p>
+  </footer>
+
 </body>
 </html>
